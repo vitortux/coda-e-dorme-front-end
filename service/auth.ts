@@ -1,3 +1,5 @@
+import { api } from "@/service/api";
+
 type SignInRequestData = {
   email: string;
   password: string;
@@ -6,15 +8,17 @@ type SignInRequestData = {
 const delay = (amount = 750) =>
   new Promise((resolve) => setTimeout(resolve, amount));
 
-// Simulando requisição para o back-end, mas o ideal é realizar o fetch
 export async function signInRequest(data: SignInRequestData) {
-  await delay();
+  const response = await api.post("/auth/login", {
+    email: data.email,
+    senha: data.password,
+  });
 
   return {
-    token: "jwt.token",
+    token: response.data.token,
     user: {
       name: "Bito",
-      email: "bitinho@gmail.com",
+      email: data.email,
     },
   };
 }
