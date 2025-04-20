@@ -1,7 +1,6 @@
 "use client";
 
 import { AuthContext } from "@/context/AuthContext";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { FiSearch, FiShoppingCart, FiUser } from "react-icons/fi";
@@ -18,11 +17,9 @@ export default function Header() {
     <header className="w-full px-8 md:px-32 py-5 flex items-center justify-between bg-white shadow-sm">
       {/* Logo */}
       <div className="flex items-center">
-        <Image
+        <img
           src="https://static.nike.com.br/v11-9-0/images/brands/logo.svg"
           alt="Logo da Mike"
-          width={60}
-          height={60}
           className="cursor-pointer"
         />
       </div>
