@@ -50,7 +50,7 @@ export default function Header() {
           <input
             type="text"
             placeholder="Pesquisar..."
-            className="w-full bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors hover:bg-gray-200"
+            className="w-full bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors hover:bg-gray-200"
           />
           <div className="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer">
             <FiSearch />
@@ -68,7 +68,7 @@ export default function Header() {
         ) : (
           <button
             onClick={handleLogin}
-            className="text-sm font-medium text-gray-700 hover:text-black border border-gray-300 px-4 py-1 rounded-full transition-all transform hover:scale-105"
+            className="text-sm font-medium text-gray-700 border border-gray-300 px-4 py-1 rounded-full transition-all transform hover:scale-105 cursor-pointer"
           >
             Entrar
           </button>
@@ -76,7 +76,7 @@ export default function Header() {
 
         {/* Carrinho */}
         <button
-          className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800 hover:text-black"
+          className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800"
           aria-label="Carrinho"
         >
           <FiShoppingCart />
