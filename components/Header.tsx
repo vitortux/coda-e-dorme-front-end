@@ -14,7 +14,7 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full px-8 md:px-32 py-5 flex items-center justify-between bg-white shadow-sm">
+    <header className="w-full px-8 md:px-32 py-5 flex items-center justify-between bg-white shadow-sm border-b border-gray-300">
       {/* Logo */}
       <div className="flex items-center">
         <img
