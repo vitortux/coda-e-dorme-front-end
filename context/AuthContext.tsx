@@ -2,7 +2,7 @@
 
 import { recoverUserData, signInRequest } from "@/service/auth";
 import { createContext, useEffect, useState } from "react";
-import { setCookie, parseCookies } from "nookies";
+import { setCookie, parseCookies, destroyCookie } from "nookies";
 import { useRouter } from "next/navigation";
 import { api } from "@/service/api";
 
@@ -20,6 +20,7 @@ type AuthContextType = {
   isAuthenticated: boolean;
   user: User | null;
   signIn: (data: SignInData) => Promise<void>;
+  signOut: () => void;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -58,8 +59,14 @@ export function AuthProvider({ children }) {
     router.push("/");
   }
 
+  function signOut() {
+    destroyCookie(undefined, "codaedorme.token");
+    setUser(null);
+    // router.push("/login");
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

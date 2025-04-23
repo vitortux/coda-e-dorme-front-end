@@ -3,14 +3,18 @@
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import { FiSearch, FiShoppingCart, FiUser } from "react-icons/fi";
+import { FiSearch, FiShoppingCart, FiUser, FiLogOut } from "react-icons/fi";
 
 export default function Header() {
   const router = useRouter();
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, signOut } = useContext(AuthContext);
 
   const handleLogin = () => {
     router.push("/login");
+  };
+
+  const handleLogout = () => {
+    signOut();
   };
 
   return (
@@ -19,7 +23,7 @@ export default function Header() {
       <div className="flex items-center">
         <img
           src="https://static.nike.com.br/v11-9-0/images/brands/logo.svg"
-          alt="Logo da Mike"
+          alt="Logo da Nike"
           className="cursor-pointer"
         />
       </div>
@@ -59,12 +63,23 @@ export default function Header() {
 
         {/* Login ou Usuário */}
         {isAuthenticated ? (
-          <button
-            className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800 hover:text-black"
-            aria-label="Perfil do usuário"
-          >
-            <FiUser />
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800 hover:text-black"
+              aria-label="Perfil do usuário"
+            >
+              <FiUser />
+            </button>
+
+            {/* Botão de Logout */}
+            <button
+              onClick={handleLogout}
+              className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800 hover:text-black"
+              aria-label="Sair"
+            >
+              <FiLogOut />
+            </button>
+          </div>
         ) : (
           <button
             onClick={handleLogin}
