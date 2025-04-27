@@ -1,29 +1,33 @@
+import { Endereco, getAddress } from "@/service/cep";
+import { AddressType } from "@/types/adress";
 import { useState } from "react";
-import { getAddress, Endereco } from "@/service/cep";
+import { useFormContext } from "react-hook-form";
 
-export default function EntregaAddressInfoForm() {
+type AddressFormProps = {
+  addressType: AddressType;
+};
+
+export default function AdressInfoForm({ addressType }: AddressFormProps) {
+  const adressBase = `endereco_${addressType}`;
+  const context = useFormContext();
+
   const [cep, setCep] = useState("");
-  const [logradouro, setLogradouro] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [estado, setEstado] = useState("");
-  const [numero, setNumero] = useState("");
-  const [complemento, setComplemento] = useState("");
 
   const handleCepChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const cepValue = event.target.value;
     setCep(cepValue);
+    context.setValue(`${adressBase}.cep`, cepValue);
 
     if (cepValue.length === 8) {
       const endereco: Endereco | null = await getAddress(cepValue);
 
       if (endereco) {
-        setLogradouro(endereco.logradouro);
-        setBairro(endereco.bairro);
-        setCidade(endereco.localidade);
-        setEstado(endereco.uf);
+        context.setValue(`${adressBase}.logradouro`, endereco.logradouro);
+        context.setValue(`${adressBase}.bairro`, endereco.bairro);
+        context.setValue(`${adressBase}.cidade`, endereco.localidade);
+        context.setValue(`${adressBase}.estado`, endereco.uf);
       } else {
         alert("CEP não encontrado.");
       }
@@ -37,13 +41,13 @@ export default function EntregaAddressInfoForm() {
       </label>
       <input
         id="cep"
-        name="cep"
         type="text"
         required
         value={cep}
-        onChange={handleCepChange}
         className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         placeholder="00000-000"
+        {...context.register(`${adressBase}.cep`)}
+        onChange={handleCepChange}
       />
 
       <label htmlFor="logradouro" className="font-semibold text-sm pb-1 block">
@@ -51,13 +55,11 @@ export default function EntregaAddressInfoForm() {
       </label>
       <input
         id="logradouro"
-        name="logradouro"
         type="text"
         required
-        value={logradouro}
-        onChange={(e) => setLogradouro(e.target.value)}
         className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         placeholder="Rua, Avenida, etc."
+        {...context.register(`${adressBase}.logradouro`)}
       />
 
       <div className="flex space-x-4">
@@ -67,13 +69,11 @@ export default function EntregaAddressInfoForm() {
           </label>
           <input
             id="numero"
-            name="numero"
             type="text"
-            value={numero}
-            onChange={(e) => setNumero(e.target.value)}
             required
             className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
             placeholder="Número"
+            {...context.register(`${adressBase}.numero`)}
           />
         </div>
         <div className="w-full">
@@ -85,12 +85,10 @@ export default function EntregaAddressInfoForm() {
           </label>
           <input
             id="complemento"
-            name="complemento"
             type="text"
-            value={complemento}
-            onChange={(e) => setComplemento(e.target.value)}
             className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
             placeholder="Apto, Bloco, etc."
+            {...context.register(`${adressBase}.complemento`)}
           />
         </div>
       </div>
@@ -100,13 +98,11 @@ export default function EntregaAddressInfoForm() {
       </label>
       <input
         id="bairro"
-        name="bairro"
         type="text"
         required
-        value={bairro}
-        onChange={(e) => setBairro(e.target.value)}
         className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         placeholder="Bairro"
+        {...context.register(`${adressBase}.bairro`)}
       />
 
       <label htmlFor="cidade" className="font-semibold text-sm pb-1 block">
@@ -114,13 +110,11 @@ export default function EntregaAddressInfoForm() {
       </label>
       <input
         id="cidade"
-        name="cidade"
         type="text"
         required
-        value={cidade}
-        onChange={(e) => setCidade(e.target.value)}
         className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         placeholder="Cidade"
+        {...context.register(`${adressBase}.cidade`)}
       />
 
       <label htmlFor="estado" className="font-semibold text-sm pb-1 block">
@@ -128,11 +122,9 @@ export default function EntregaAddressInfoForm() {
       </label>
       <select
         id="estado"
-        name="estado"
         required
-        value={estado}
-        onChange={(e) => setEstado(e.target.value)}
         className="text-black border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+        {...context.register(`${adressBase}.estado`)}
       >
         <option value="">Selecione...</option>
         <option value="AC">Acre</option>
