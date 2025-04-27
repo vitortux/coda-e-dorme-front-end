@@ -3,10 +3,12 @@
 import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
   const { signIn } = useContext(AuthContext);
+  const router = useRouter();
 
   async function handleSignIn(data) {
     await signIn(data);
@@ -72,7 +74,10 @@ export default function Login() {
           <div className="py-5">
             <div className="grid grid-cols-2 gap-1">
               <div className="text-center sm:text-left whitespace-nowrap">
-                <button className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 ring-inset">
+                <button
+                  className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 ring-inset"
+                  onClick={() => router.push("/register")}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -87,7 +92,9 @@ export default function Login() {
                       d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
                     />
                   </svg>
-                  <span className="inline-block ml-1">Esqueceu sua senha?</span>
+                  <span className="inline-block ml-1">
+                    Não possui uma conta?
+                  </span>
                 </button>
               </div>
               <div className="text-center sm:text-right  whitespace-nowrap">
@@ -115,7 +122,10 @@ export default function Login() {
         <div className="py-5">
           <div className="grid grid-cols-2 gap-1">
             <div className="text-center sm:text-left whitespace-nowrap">
-              <button className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 ring-inset">
+              <button
+                className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 ring-inset"
+                onClick={() => router.push("/")}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -130,7 +140,7 @@ export default function Login() {
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                <span className="inline-block ml-1">Voltar</span>
+                <span className="inline-block ml-1">Página inicial</span>
               </button>
             </div>
           </div>

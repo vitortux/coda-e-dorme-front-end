@@ -1,25 +1,18 @@
 "use client";
 
-import { recoverUserData, signInRequest } from "@/service/auth";
-import { createContext, useEffect, useState } from "react";
-import { setCookie, parseCookies } from "nookies";
-import { useRouter } from "next/navigation";
 import { api } from "@/service/api";
-
-type User = {
-  name: string;
-  email: string;
-};
-
-type SignInData = {
-  email: string;
-  password: string;
-};
+import { recoverUserData, signInRequest, signUpRequest } from "@/service/auth";
+import { SignInRequestData, SignUpRequestData, User } from "@/types/auth_types";
+import { useRouter } from "next/navigation";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { createContext, useEffect, useState } from "react";
 
 type AuthContextType = {
   isAuthenticated: boolean;
   user: User | null;
-  signIn: (data: SignInData) => Promise<void>;
+  signIn: (data: SignInRequestData) => Promise<void>;
+  signOut: () => void;
+  signUp: (data: SignUpRequestData) => Promise<void>;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -41,7 +34,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  async function signIn({ email, password }: SignInData) {
+  async function signIn({ email, password }: SignInRequestData) {
     const { token, user } = await signInRequest({
       email,
       password,
@@ -58,8 +51,21 @@ export function AuthProvider({ children }) {
     router.push("/");
   }
 
+  async function signUp(data: SignUpRequestData) {
+    await signUpRequest(data);
+    router.push("/login");
+  }
+
+  function signOut() {
+    destroyCookie(undefined, "codaedorme.token");
+    setUser(null);
+    // router.push("/login");
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated, signIn, signUp, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

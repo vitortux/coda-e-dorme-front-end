@@ -3,7 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
-  title: "Meu Projeto",
+  title: "Mike",
   description: "Feito com Next.js 15",
 };
 
