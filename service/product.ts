@@ -10,7 +10,7 @@ export async function getProdutos(page: number = 0, size: number = 10) {
   }
 }
 
-export async function getProductById(id: string) {
+export async function getProdutoById(id: string) {
   try {
     const response = await api.get(`/api/produtos/${id}`);
     return response.data;

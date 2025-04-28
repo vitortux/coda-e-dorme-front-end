@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="bg-gray-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-8 md:px-32">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-8 md:px-32">
         {produtos.map((produto) => (
           <ProductCard key={produto.id} product={produto} />
         ))}

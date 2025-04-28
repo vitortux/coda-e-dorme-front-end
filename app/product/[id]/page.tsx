@@ -1,40 +1,56 @@
+"use client";
+
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { getProductById } from "@/service/product";
+import { CartContext } from "@/context/CartContext";
+import { getProdutoById } from "@/service/product";
+import { useParams, useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const product = await getProductById(id);
+export default function ProductPage() {
+  const [product, setProduct] = useState<any>(null);
+  const { id } = useParams<{ id: string }>();
+  const { cart, addToCart } = useContext(CartContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function fetchProduct() {
+      const data = await getProdutoById(id);
+      setProduct(data);
+    }
+
+    fetchProduct();
+  }, [id]);
+
+  function handleAddToCart(product) {
+    addToCart(product);
+    router.push("/cart");
+  }
 
   return (
     <>
       <Header />
-      <div className="text-gray-700 body-font overflow-hidden bg-gray-100">
-        <div className="container p-8 my-8 mx-auto bg-white rounded-lg shadow-lg">
+      <div className="text-gray-700 body-font overflow-hidden">
+        <div className="container p-8 my-8 mx-auto bg-white">
           <div className="lg:w-4/5 mx-auto flex flex-wrap justify-between">
             <img
               alt="ecommerce"
-              className="lg:w-2/5 w-full object-cover object-center border-gray-200 rounded"
-              src={`http://localhost:8080${product.imagens?.[0]?.diretorioDestino}`}
+              className="lg:w-2/5 w-full object-cover object-center border-gray-200"
+              src={`http://localhost:8080${product?.imagens?.[0]?.diretorioDestino}`}
             />
-            <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+            <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 ">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
                 MIKE
               </h2>
               <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-                {product.nome}
+                {product?.nome}
               </h1>
               <div className="flex mb-4">
                 <span className="flex items-center">
-                  {/* Gerar estrelas dinamicamente de acordo com a avaliação do produto */}
                   {Array.from({ length: 5 }, (_, index) => (
                     <svg
                       key={index}
-                      fill={index < 4 ? "currentColor" : "none"} // Preenchendo as estrelas com base na avaliação
+                      fill={index < 4 ? "currentColor" : "none"}
                       stroke="currentColor"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -86,7 +102,7 @@ export default async function ProductPage({
                   </a>
                 </span>
               </div>
-              <p className="leading-relaxed">{product.descricao}</p>
+              <p className="leading-relaxed">{product?.descricao}</p>
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
                 <div className="flex">
                   <span className="mr-3">Color</span>
@@ -121,9 +137,15 @@ export default async function ProductPage({
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
-                  $ {product.preco},99
+                  $ {product?.preco},99
                 </span>
-                <button className="flex ml-auto text-white border-0 py-2 px-6 focus:outline-none bg-black rounded transition duration-200 transform hover:scale-102">
+                <button
+                  className="flex ml-auto text-white border-0 py-2 px-6 focus:outline-none bg-black rounded transition duration-200 transform hover:scale-102"
+                  disabled={!product}
+                  onClick={() => {
+                    handleAddToCart(product);
+                  }}
+                >
                   Comprar agora
                 </button>
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4 transition duration-200 transform hover:scale-102">

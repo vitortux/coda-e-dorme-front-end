@@ -17,3 +17,8 @@ export type Produto = {
   imagens: Imagem[];
   status: Status;
 };
+
+export type CartItem = {
+  product: Produto;
+  quantity: number;
+};

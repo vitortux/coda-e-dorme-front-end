@@ -1,10 +1,13 @@
+import { GlobalProvider } from "@/context/GlobalProvider";
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Mike",
   description: "Feito com Next.js 15",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
@@ -15,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className="antialiased">
-        <AuthProvider>{children}</AuthProvider>
+        <GlobalProvider>{children}</GlobalProvider>
       </body>
     </html>
   );
