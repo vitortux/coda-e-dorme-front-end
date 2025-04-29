@@ -1,8 +1,6 @@
 import { api } from "@/service/api";
 import { SignInRequestData, SignUpRequestData } from "@/types/auth_types"; // Importando os tipos
-
-const delay = (amount = 750) =>
-  new Promise((resolve) => setTimeout(resolve, amount));
+import { parseCookies } from "nookies";
 
 export async function signInRequest(data: SignInRequestData) {
   const response = await api.post("/auth/login", {
@@ -10,11 +8,25 @@ export async function signInRequest(data: SignInRequestData) {
     senha: data.password,
   });
 
+  const cliente = response.data.cliente;
+
   return {
     token: response.data.token,
     user: {
-      name: "Bito",
-      email: data.email,
+      nome_completo: cliente.nomeCompleto,
+      email: cliente.email,
+      telefone: cliente.telefone,
+      cpf: cliente.cpf,
+      data_nascimento: cliente.dataNascimento,
+      genero: cliente.genero,
+      endereco_faturamento: {
+        ...cliente.enderecoFaturamento,
+      },
+      endereco_entrega: [
+        {
+          ...cliente.enderecoEntrega,
+        },
+      ],
     },
   };
 }
@@ -39,12 +51,32 @@ export async function signUpRequest(data: SignUpRequestData): Promise<void> {
 }
 
 export async function recoverUserData() {
-  await delay();
+  const { "codaedorme.token": token, email } = parseCookies();
+
+  const response = await api.post(`/api/clientes/${email}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const cliente = response.data.cliente;
 
   return {
     user: {
-      name: "Bito",
-      email: "bitinho@gmail.com",
+      nome_completo: cliente.nomeCompleto,
+      email: cliente.email,
+      telefone: cliente.telefone,
+      cpf: cliente.cpf,
+      data_nascimento: cliente.dataNascimento,
+      genero: cliente.genero,
+      endereco_faturamento: {
+        ...cliente.enderecoFaturamento,
+      },
+      endereco_entrega: [
+        {
+          ...cliente.enderecoEntrega,
+        },
+      ],
     },
   };
 }

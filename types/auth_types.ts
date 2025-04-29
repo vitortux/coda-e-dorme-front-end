@@ -9,8 +9,13 @@ export type Address = {
 };
 
 export type User = {
-  name: string;
+  nome_completo: string;
   email: string;
+  cpf: string;
+  data_nascimento: string;
+  genero: string;
+  endereco_entrega: Address[];
+  endereco_faturamento: Address;
 };
 
 export type SignInRequestData = {
