@@ -2,12 +2,48 @@
 
 import CartItem from "@/components/CartItem";
 import { CartContext } from "@/context/CartContext";
+import { getAddress } from "@/service/cep";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 export default function Cart() {
   const { cart } = useContext(CartContext);
   const router = useRouter();
+
+  const [cep, setCep] = useState("");
+  const [endereco, setEndereco] = useState(null);
+  const [fretesDisponiveis, setFretesDisponiveis] = useState([]);
+  const [freteSelecionado, setFreteSelecionado] = useState(null);
+
+  const fretes = [
+    { nome: "Econômico", prazo: "5 a 7 dias úteis", valor: 9.9 },
+    { nome: "Normal", prazo: "3 a 5 dias úteis", valor: 19.9 },
+    { nome: "Expresso", prazo: "1 a 2 dias úteis", valor: 29.9 },
+  ];
+
+  const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputCep = e.target.value;
+    setCep(inputCep);
+
+    if (inputCep.length === 8) {
+      const validAddress = await getAddress(inputCep);
+      if (validAddress) {
+        setEndereco(validAddress);
+        setFretesDisponiveis(fretes);
+      } else {
+        setEndereco(null);
+        setFretesDisponiveis([]);
+      }
+    }
+  };
+
+  const calcularTotal = () => {
+    const subtotal = cart.reduce(
+      (acc, item) => acc + item.product.preco * item.quantity,
+      0
+    );
+    return freteSelecionado ? subtotal + freteSelecionado.valor : subtotal;
+  };
 
   return (
     <div className="relative z-10 after:contents-[''] after:absolute after:z-0 after:h-full xl:after:w-1/3 after:top-0 after:right-0 after:bg-gray-100 bg-gray-100 flex justify-center xl:items-center xl:justify-center min-h-screen">
@@ -19,7 +55,7 @@ export default function Cart() {
                 Carrinho de compras
               </h2>
               <h2 className="font-manrope font-bold text-xl leading-8 text-gray-600">
-                3 Items
+                {cart.length} {cart.length === 1 ? "Item" : "Items"}
               </h2>
             </div>
             <div className="grid grid-cols-12 mt-8 max-md:hidden pb-6 border-b border-gray-200">
@@ -43,25 +79,31 @@ export default function Cart() {
                 </div>
               </div>
             </div>
-            {[...Array(3)].map((_, index) => (
-              <CartItem key={index} />
+            {cart.map((item, index) => (
+              <CartItem key={`${item.product.id}-${index}`} item={item} />
             ))}
           </div>
           <div className="col-span-12 xl:col-span-4 w-full max-xl:px-6 max-w-3xl xl:max-w-lg mx-auto lg:pl-8 py-24 xl:border-l border-gray-200">
             <h2 className="font-manrope font-bold text-3xl leading-10 text-black pb-8 border-b border-gray-300">
-              Resumo do pedido
+              Detalhes do pedido
             </h2>
             <div className="mt-8">
               <div className="flex items-center justify-between pb-6">
                 <p className="font-normal text-lg leading-8 text-black">
-                  3 Items
+                  {cart.length} {cart.length === 1 ? "Item" : "Items"}
                 </p>
                 <p className="font-medium text-lg leading-8 text-black">
-                  $480.00
+                  R${" "}
+                  {cart
+                    .reduce(
+                      (acc, item) => acc + item.product.preco * item.quantity,
+                      0
+                    )
+                    .toFixed(2)}
                 </p>
               </div>
               <form>
-                <label className="flex  items-center mb-1.5 text-gray-600 text-sm font-medium">
+                <label className="flex items-center mb-1.5 text-gray-600 text-sm font-medium">
                   Frete
                 </label>
                 <div className="flex pb-6">
@@ -70,41 +112,64 @@ export default function Cart() {
                       type="text"
                       className="block w-full h-11 pr-11 pl-5 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-white border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-gray-400"
                       placeholder="Digite seu CEP"
+                      value={cep}
+                      onChange={handleCepChange}
                     />
                   </div>
                 </div>
-                <label className="flex items-center mb-1.5 text-gray-400 text-sm font-medium">
-                  Cupom Promocional
-                </label>
-                <div className="flex pb-4 w-full">
-                  <div className="relative w-full ">
-                    <div className=" absolute left-0 top-0 py-2.5 px-4 text-gray-300"></div>
-                    <input
-                      type="text"
-                      className="block w-full h-11 pr-11 pl-5 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-white border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-gray-400 "
-                      placeholder="xxxx xxxx xxxx"
-                    />
+
+                {endereco && (
+                  <div className="pb-6">
+                    <p className="text-sm text-gray-600">
+                      {endereco.logradouro}, {endereco.bairro},{" "}
+                      {endereco.localidade} - {endereco.uf}
+                    </p>
                   </div>
-                </div>
-                <div className="flex items-center border-b border-gray-200">
-                  <button className="rounded-lg w-full bg-black py-2.5 px-4 text-white text-sm font-semibold text-center mb-8 transition-all duration-500 hover:bg-black/80">
-                    Aplicar
-                  </button>
-                </div>
+                )}
+
+                {fretesDisponiveis.length > 0 && (
+                  <div className="pb-6">
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Escolha o frete
+                    </label>
+                    <select
+                      className="w-full h-11 pr-11 pl-5 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-white border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-gray-400"
+                      onChange={(e) => {
+                        const frete = fretes.find(
+                          (f) => f.nome === e.target.value
+                        );
+                        setFreteSelecionado(frete || null);
+                      }}
+                    >
+                      <option value="">Selecione uma opção</option>
+                      {fretesDisponiveis.map((frete, index) => (
+                        <option key={index} value={frete.nome}>
+                          {frete.nome}: {frete.prazo} - R${" "}
+                          {frete.valor.toFixed(2)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between py-8">
                   <p className="font-medium text-xl leading-8 text-black">
-                    3 Items
+                    {cart.length} {cart.length === 1 ? "Item" : "Items"}
                   </p>
-                  <p className="font-semibold text-xl leading-8 text-indigo-600">
-                    $485.00
+                  <p className="font-semibold text-xl leading-8">
+                    R$ {calcularTotal().toFixed(2)}
                   </p>
                 </div>
-                <button className="w-full text-center bg-indigo-600 rounded-xl py-3 px-6 font-semibold text-lg text-white transition-all duration-500 hover:bg-indigo-700">
+                <button
+                  type="button"
+                  className="cursor-pointer w-full text-center bg-black rounded-xl py-3 px-6 font-semibold text-lg text-white transition duration-200 transform hover:scale-102"
+                >
                   Checkout
                 </button>
                 <button
                   className="transition duration-200 mx-5 px-5 py-4 my-5 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 ring-inset"
                   onClick={() => router.push("/")}
+                  type="button"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

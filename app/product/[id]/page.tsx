@@ -140,7 +140,7 @@ export default function ProductPage() {
                   $ {product?.preco},99
                 </span>
                 <button
-                  className="flex ml-auto text-white border-0 py-2 px-6 focus:outline-none bg-black rounded transition duration-200 transform hover:scale-102"
+                  className="flex ml-auto text-white border-0 py-2 px-6 focus:outline-none bg-black rounded transition duration-200 transform hover:scale-102 cursor-pointer"
                   disabled={!product}
                   onClick={() => {
                     handleAddToCart(product);
@@ -148,7 +148,7 @@ export default function ProductPage() {
                 >
                   Comprar agora
                 </button>
-                <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4 transition duration-200 transform hover:scale-102">
+                <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4 transition duration-200 transform hover:scale-102 cursor-pointer">
                   <svg
                     fill="currentColor"
                     strokeLinecap="round"
