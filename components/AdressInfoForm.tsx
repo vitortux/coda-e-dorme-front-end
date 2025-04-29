@@ -50,6 +50,12 @@ export default function AdressInfoForm({ addressType }: AddressFormProps) {
         onChange={handleCepChange}
       />
 
+      {context.formState.errors.cep && (
+        <p className="text-red-500 text-sm mb-5">
+          {`${context.formState.errors.cep.message}`}
+        </p>
+      )}
+
       <label htmlFor="logradouro" className="font-semibold text-sm pb-1 block">
         Logradouro
       </label>
