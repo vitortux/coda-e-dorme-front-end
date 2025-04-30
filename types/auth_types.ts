@@ -6,6 +6,7 @@ export type Address = {
   bairro: string;
   cidade: string;
   estado: string;
+  padrao: boolean;
 };
 
 export type User = {

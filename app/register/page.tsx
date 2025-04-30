@@ -1,6 +1,10 @@
 "use client";
 
+import AccountRedirectButton from "@/components/AccountRedirect";
 import AdressInfoForm from "@/components/AdressInfoForm";
+import BackHomeButton from "@/components/GoToHomeButton";
+import LogoFormHeader from "@/components/LogoFormHeader";
+import SubmitButton from "@/components/SubmitButton";
 import UserInfoForm from "@/components/UserInfoForm";
 import { AuthContext } from "@/context/AuthContext";
 import { AddressType } from "@/types/adress";
@@ -70,9 +74,7 @@ export default function Register() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center sm:py-12">
       <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
-        <h1 className="font-bold text-center text-2xl mb-5">
-          <img src="/logo.svg" alt="Logo" className="w-32 h-auto mx-auto" />
-        </h1>
+        <LogoFormHeader />
         <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
           <FormProvider {...form}>
             <form
@@ -80,7 +82,7 @@ export default function Register() {
               className="px-5 py-7"
             >
               <UserInfoForm />
-              <div className="my-6 border-t border-gray-300"></div>
+              <div className="my-6 border-t border-gray-300" />
               <AdressInfoForm addressType={AddressType.Faturamento} />
               <div className="flex items-center mb-6">
                 <input
@@ -100,53 +102,16 @@ export default function Register() {
                   <AdressInfoForm addressType={AddressType.Entrega} />
                 </>
               )}
-              <button
-                type="submit"
-                className="bg-black text-white w-full py-2.5 rounded-lg text-sm shadow-sm font-semibold text-center inline-block cursor-pointer transition duration-200 transform hover:scale-102"
-              >
-                <span className="inline-block mr-2">Cadastrar-se</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="w-4 h-4 inline-block"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </button>
+              <SubmitButton text="Cadastrar-se" />
             </form>
           </FormProvider>
           <div className="py-5">
             <div className="grid grid-cols-2 gap-1">
               <div className="text-center sm:text-left whitespace-nowrap">
-                <button
-                  className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 ring-inset"
-                  onClick={() => router.push("/login")}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="w-4 h-4 inline-block align-text-top"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
-                    />
-                  </svg>
-                  <span className="inline-block ml-1">
-                    Já possui uma conta?
-                  </span>
-                </button>
+                <AccountRedirectButton
+                  text="Já possui uma conta?"
+                  route="/login"
+                />
               </div>
               <div className="text-center sm:text-right  whitespace-nowrap">
                 <button className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 ring-inset">
@@ -173,26 +138,7 @@ export default function Register() {
         <div className="py-5">
           <div className="grid grid-cols-2 gap-1">
             <div className="text-center sm:text-left whitespace-nowrap">
-              <button
-                className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 ring-inset"
-                onClick={() => router.push("/")}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="w-4 h-4 inline-block align-text-top"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                <span className="inline-block ml-1">Página inicial</span>
-              </button>
+              <BackHomeButton />
             </div>
           </div>
         </div>

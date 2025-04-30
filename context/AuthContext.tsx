@@ -47,7 +47,6 @@ export function AuthProvider({ children }) {
     api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
     setUser(user);
-    console.log(user);
 
     router.push("/");
   }
@@ -59,8 +58,10 @@ export function AuthProvider({ children }) {
 
   function signOut() {
     destroyCookie(undefined, "codaedorme.token");
+
+    delete api.defaults.headers["Authorization"];
+
     setUser(null);
-    // router.push("/login");
   }
 
   return (

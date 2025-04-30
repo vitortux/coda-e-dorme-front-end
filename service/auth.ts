@@ -22,11 +22,7 @@ export async function signInRequest(data: SignInRequestData) {
       endereco_faturamento: {
         ...cliente.enderecoFaturamento,
       },
-      endereco_entrega: [
-        {
-          ...cliente.enderecoEntrega,
-        },
-      ],
+      endereco_entrega: cliente.enderecoEntrega,
     },
   };
 }
@@ -51,15 +47,15 @@ export async function signUpRequest(data: SignUpRequestData): Promise<void> {
 }
 
 export async function recoverUserData() {
-  const { "codaedorme.token": token, email } = parseCookies();
+  const { "codaedorme.token": token } = parseCookies();
 
-  const response = await api.post(`/api/clientes/${email}`, {
+  const response = await api.get("/api/clientes/me", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  const cliente = response.data.cliente;
+  const cliente = response.data;
 
   return {
     user: {
@@ -72,11 +68,7 @@ export async function recoverUserData() {
       endereco_faturamento: {
         ...cliente.enderecoFaturamento,
       },
-      endereco_entrega: [
-        {
-          ...cliente.enderecoEntrega,
-        },
-      ],
+      endereco_entrega: cliente.enderecoEntrega,
     },
   };
 }
