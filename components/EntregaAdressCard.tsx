@@ -1,15 +1,18 @@
 import { Address } from "@/types/auth_types";
 import { FaStar } from "react-icons/fa";
 
-export default function FaturamentoAdressCard({
+export default function EntregaAdressCard({
   endereco,
+  handleClick,
 }: {
   endereco: Address;
+  handleClick?: () => void;
 }) {
   return (
-    <div className="pb-6 cursor-pointer">
+    <div className="pb-6">
       <div
-        className={`bg-white border rounded-xl p-4 shadow-sm text-sm text-gray-700 space-y-3 ${
+        onClick={handleClick}
+        className={`bg-white border rounded-xl p-4 shadow-sm text-sm text-gray-700 space-y-3 cursor-pointer ${
           endereco?.padrao ? "border-gray-400 bg-gray-100" : "border-gray-200"
         }`}
       >

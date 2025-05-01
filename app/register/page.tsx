@@ -9,7 +9,6 @@ import UserInfoForm from "@/components/UserInfoForm";
 import { AuthContext } from "@/context/AuthContext";
 import { AddressType } from "@/types/adress";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -56,7 +55,6 @@ export const registerSchema = z
 export default function Register() {
   const [sameAdress, setSameAdress] = useState(true);
   const { signUp } = useContext(AuthContext);
-  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(registerSchema),

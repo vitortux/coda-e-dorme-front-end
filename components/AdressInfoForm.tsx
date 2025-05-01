@@ -42,7 +42,6 @@ export default function AdressInfoForm({ addressType }: AddressFormProps) {
       <input
         id="cep"
         type="text"
-        required
         value={cep}
         className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         placeholder="00000-000"
@@ -62,7 +61,6 @@ export default function AdressInfoForm({ addressType }: AddressFormProps) {
       <input
         id="logradouro"
         type="text"
-        required
         className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         placeholder="Rua, Avenida, etc."
         {...context.register(`${adressBase}.logradouro`)}
@@ -76,7 +74,6 @@ export default function AdressInfoForm({ addressType }: AddressFormProps) {
           <input
             id="numero"
             type="text"
-            required
             className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
             placeholder="Número"
             {...context.register(`${adressBase}.numero`)}
@@ -105,7 +102,6 @@ export default function AdressInfoForm({ addressType }: AddressFormProps) {
       <input
         id="bairro"
         type="text"
-        required
         className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         placeholder="Bairro"
         {...context.register(`${adressBase}.bairro`)}
@@ -117,7 +113,6 @@ export default function AdressInfoForm({ addressType }: AddressFormProps) {
       <input
         id="cidade"
         type="text"
-        required
         className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         placeholder="Cidade"
         {...context.register(`${adressBase}.cidade`)}
@@ -128,7 +123,6 @@ export default function AdressInfoForm({ addressType }: AddressFormProps) {
       </label>
       <select
         id="estado"
-        required
         className="text-black border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         {...context.register(`${adressBase}.estado`)}
       >

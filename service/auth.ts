@@ -13,6 +13,7 @@ export async function signInRequest(data: SignInRequestData) {
   return {
     token: response.data.token,
     user: {
+      id: cliente.id,
       nome_completo: cliente.nomeCompleto,
       email: cliente.email,
       telefone: cliente.telefone,
@@ -59,6 +60,7 @@ export async function recoverUserData() {
 
   return {
     user: {
+      id: cliente.id,
       nome_completo: cliente.nomeCompleto,
       email: cliente.email,
       telefone: cliente.telefone,

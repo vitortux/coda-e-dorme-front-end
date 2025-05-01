@@ -10,6 +10,7 @@ export type Address = {
 };
 
 export type User = {
+  id: number;
   nome_completo: string;
   email: string;
   cpf: string;

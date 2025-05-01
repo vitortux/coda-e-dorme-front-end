@@ -1,9 +1,19 @@
 import { User } from "@/types/auth_types";
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 export default function EditUserForm({ user }: { user: User }) {
   const context = useFormContext();
-  console.log(user);
+
+  useEffect(() => {
+    if (user) {
+      context.setValue("nome_completo", user.nome_completo);
+      context.setValue("email", user.email);
+      context.setValue("cpf", user.cpf);
+      context.setValue("data_nascimento", user.data_nascimento);
+      context.setValue("genero", user.genero?.toLowerCase());
+    }
+  }, [user]);
 
   return (
     <>
@@ -19,10 +29,8 @@ export default function EditUserForm({ user }: { user: User }) {
         required
         className="placeholder-gray-400 border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         placeholder="Seu nome completo"
-        defaultValue={user?.nome_completo}
         {...context.register("nome_completo")}
       />
-
       {context.formState.errors.nome_completo && (
         <p className="text-red-500 text-sm mb-5">
           {`${context.formState.errors.nome_completo.message}`}
@@ -39,7 +47,6 @@ export default function EditUserForm({ user }: { user: User }) {
         readOnly
         className="text-gray-500 placeholder-gray-400 border border-gray-300 bg-gray-100 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full cursor-not-allowed focus:border-gray-400 focus:bg-gray-200 focus:ring-0"
         placeholder="example@example.com"
-        defaultValue={user?.email}
         {...context.register("email")}
       />
 
@@ -52,10 +59,8 @@ export default function EditUserForm({ user }: { user: User }) {
         readOnly
         className="text-gray-500 placeholder-gray-400 border border-gray-300 bg-gray-100 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full cursor-not-allowed focus:border-gray-400 focus:bg-gray-200 focus:ring-0"
         placeholder="000.000.000-00"
-        defaultValue={user?.cpf}
         {...context.register("cpf")}
       />
-
       {context.formState.errors.cpf && (
         <p className="text-red-500 text-sm mb-5">
           {`${context.formState.errors.cpf.message}`}
@@ -86,7 +91,6 @@ export default function EditUserForm({ user }: { user: User }) {
         className="text-black border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         {...context.register("confirmar_senha")}
       />
-
       {context.formState.errors.confirmar_senha && (
         <p className="text-red-500 text-sm mb-5">
           {`${context.formState.errors.confirmar_senha.message}`}
@@ -103,7 +107,6 @@ export default function EditUserForm({ user }: { user: User }) {
         id="data_nascimento"
         type="date"
         required
-        defaultValue={user?.data_nascimento}
         className="text-black border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
         {...context.register("data_nascimento")}
       />
@@ -114,7 +117,6 @@ export default function EditUserForm({ user }: { user: User }) {
       <select
         id="genero"
         required
-        value={user?.genero.toLowerCase()}
         className="text-black border border-gray-200 rounded-lg px-3 py-2 mt-1 mb-1 mb-5 text-sm w-full"
         {...context.register("genero")}
       >
