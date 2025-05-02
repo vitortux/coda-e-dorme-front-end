@@ -58,8 +58,10 @@ export function AuthProvider({ children }) {
 
   function signOut() {
     destroyCookie(undefined, "codaedorme.token");
+
+    delete api.defaults.headers["Authorization"];
+
     setUser(null);
-    // router.push("/login");
   }
 
   return (

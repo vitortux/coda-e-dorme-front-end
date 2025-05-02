@@ -6,11 +6,18 @@ export type Address = {
   bairro: string;
   cidade: string;
   estado: string;
+  padrao: boolean;
 };
 
 export type User = {
-  name: string;
+  id: number;
+  nome_completo: string;
   email: string;
+  cpf: string;
+  data_nascimento: string;
+  genero: string;
+  endereco_entrega: Address[];
+  endereco_faturamento: Address;
 };
 
 export type SignInRequestData = {

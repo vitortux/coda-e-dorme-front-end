@@ -67,6 +67,7 @@ export default function Header() {
             <button
               className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800 hover:text-black"
               aria-label="Perfil do usuário"
+              onClick={() => router.push("/profile")}
             >
               <FiUser />
             </button>
@@ -93,6 +94,7 @@ export default function Header() {
         <button
           className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800"
           aria-label="Carrinho"
+          onClick={() => router.push("/cart")}
         >
           <FiShoppingCart />
         </button>
