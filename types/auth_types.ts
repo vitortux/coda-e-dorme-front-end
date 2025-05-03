@@ -1,4 +1,5 @@
 export type Address = {
+  id: number;
   cep: string;
   logradouro: string;
   numero: string;

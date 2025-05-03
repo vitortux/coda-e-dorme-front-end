@@ -3,23 +3,22 @@
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import { FiSearch, FiShoppingCart, FiUser, FiLogOut } from "react-icons/fi";
+import { FiLogOut, FiSearch, FiShoppingCart, FiUser } from "react-icons/fi";
 
 export default function Header() {
   const router = useRouter();
   const { isAuthenticated, signOut } = useContext(AuthContext);
 
-  const handleLogin = () => {
+  function handleLogin() {
     router.push("/login");
-  };
+  }
 
-  const handleLogout = () => {
+  function handleLogout() {
     signOut();
-  };
+  }
 
   return (
     <header className="w-full px-8 md:px-32 py-5 flex items-center justify-between bg-white shadow-sm border-b border-gray-300">
-      {/* Logo */}
       <div className="flex items-center">
         <img
           src="https://static.nike.com.br/v11-9-0/images/brands/logo.svg"
@@ -28,7 +27,6 @@ export default function Header() {
         />
       </div>
 
-      {/* Navegação */}
       <nav className="hidden lg:flex gap-6 text-gray-700 text-sm font-medium">
         {[
           { label: "Home", href: "/" },
@@ -47,9 +45,7 @@ export default function Header() {
         ))}
       </nav>
 
-      {/* Ações */}
       <nav className="flex items-center gap-4">
-        {/* Barra de pesquisa */}
         <div className="relative hidden md:block">
           <input
             type="text"
@@ -61,7 +57,6 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Login ou Usuário */}
         {isAuthenticated ? (
           <div className="flex items-center gap-4">
             <button
@@ -72,7 +67,6 @@ export default function Header() {
               <FiUser />
             </button>
 
-            {/* Botão de Logout */}
             <button
               onClick={handleLogout}
               className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800 hover:text-black"
@@ -90,7 +84,6 @@ export default function Header() {
           </button>
         )}
 
-        {/* Carrinho */}
         <button
           className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800"
           aria-label="Carrinho"

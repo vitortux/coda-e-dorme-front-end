@@ -1,6 +1,6 @@
 "use client";
 
-import CartItem from "@/components/CartItem";
+import CartItem from "@/components/CartItemCard";
 import { CartContext } from "@/context/CartContext";
 import { getAddress } from "@/service/cep";
 import { useRouter } from "next/navigation";
@@ -161,6 +161,7 @@ export default function Cart() {
                   </p>
                 </div>
                 <button
+                  onClick={() => router.push("/checkout")}
                   type="button"
                   className="cursor-pointer w-full text-center bg-black rounded-xl py-3 px-6 font-semibold text-lg text-white transition duration-200 transform hover:scale-102"
                 >
