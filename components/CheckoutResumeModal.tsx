@@ -1,22 +1,18 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "@/context/CartContext";
 import OrderSummary from "./OrderSummary";
 import FaturamentoAdressCard from "./FaturamentoAdressCard";
 import { FiCreditCard } from "react-icons/fi";
+import { Address } from "@/types/auth_types";
+import { AuthContext } from "@/context/AuthContext";
+import { criarPedido } from "@/service/user";
+import { useRouter } from "next/navigation";
 
 interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
   orderData: {
-    endereco_entrega: {
-      logradouro: string;
-      numero: string;
-      complemento?: string;
-      bairro: string;
-      cidade: string;
-      estado: string;
-      cep: string;
-    };
+    endereco_entrega: Address;
     payment: string;
   };
 }
@@ -26,21 +22,57 @@ export default function CheckoutModal({
   onClose,
   orderData,
 }: CheckoutModalProps) {
-  const { cart } = useContext(CartContext);
+  const { cart, frete, clearCart } = useContext(CartContext);
+  const { user } = useContext(AuthContext);
+  const router = useRouter();
 
   if (!isOpen) return null;
 
   const calcularTotalProdutos = () =>
     cart.reduce((total, item) => total + item.product.preco * item.quantity, 0);
 
-  const frete = 40; // Valor fixo ou dinâmico, se preferir
   const subtotal = calcularTotalProdutos();
   const total = subtotal + frete;
+
+  async function handleCheckout() {
+    const itemsPedido = cart.map((item) => ({
+      idProduto: item.product.id,
+      qtdProduto: item.quantity,
+      valorUnitario: item.product.preco,
+      valorSubTotal: item.product.preco * item.quantity,
+    }));
+
+    const pedido = {
+      idCliente: user?.id,
+      idEndereco: orderData.endereco_entrega.id,
+      valorFrete: frete,
+      formaDePagamento: orderData.payment,
+      valorTotalPedido: total,
+      statusPedido: "AGUARDANDO_PAGAMENTO",
+      itensPedido: itemsPedido,
+    };
+
+    try {
+      const response = await criarPedido(pedido);
+
+      alert(
+        `✅ ${response.mensagem}\nNúmero do pedido: ${
+          response.idPedido
+        }\nValor total: R$ ${response.valorTotal.toFixed(2)}`
+      );
+
+      clearCart();
+      router.push("/orders");
+    } catch (e) {
+      alert("❌ Não foi possível criar seu pedido: " + e.message);
+    }
+  }
 
   return (
     <div
       className="fixed inset-0 flex justify-center items-center z-50 px-4"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+      onClick={onClose}
     >
       <div className="bg-white rounded-2xl p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
         <h2 className="text-2xl font-semibold mb-4">Resumo do Pedido</h2>
@@ -91,7 +123,10 @@ export default function CheckoutModal({
           >
             Voltar
           </button>
-          <button className="px-5 py-2.5 rounded-xl bg-black text-white font-semibold shadow-md transition-transform duration-200 hover:scale-102 cursor-pointer">
+          <button
+            onClick={handleCheckout}
+            className="px-5 py-2.5 rounded-xl bg-black text-white font-semibold shadow-md transition-transform duration-200 hover:scale-102 cursor-pointer"
+          >
             Concluir Compra
           </button>
         </div>

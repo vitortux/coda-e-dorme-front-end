@@ -3,7 +3,13 @@
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import { FiLogOut, FiSearch, FiShoppingCart, FiUser } from "react-icons/fi";
+import {
+  FiLogOut,
+  FiSearch,
+  FiShoppingCart,
+  FiUser,
+  FiPackage,
+} from "react-icons/fi";
 
 export default function Header() {
   const router = useRouter();
@@ -68,6 +74,22 @@ export default function Header() {
             </button>
 
             <button
+              className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800"
+              aria-label="Carrinho"
+              onClick={() => router.push("/cart")}
+            >
+              <FiShoppingCart />
+            </button>
+
+            <button
+              className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800 hover:text-black"
+              aria-label="Pedidos"
+              onClick={() => router.push("/orders")}
+            >
+              <FiPackage />
+            </button>
+
+            <button
               onClick={handleLogout}
               className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800 hover:text-black"
               aria-label="Sair"
@@ -76,21 +98,23 @@ export default function Header() {
             </button>
           </div>
         ) : (
-          <button
-            onClick={handleLogin}
-            className="text-sm font-medium text-gray-700 border border-gray-300 px-4 py-1 rounded-full transition-all transform hover:scale-105 cursor-pointer"
-          >
-            Entrar
-          </button>
-        )}
+          <>
+            <button
+              onClick={handleLogin}
+              className="text-sm font-medium text-gray-700 border border-gray-300 px-4 py-1 rounded-full transition-all transform hover:scale-105 cursor-pointer"
+            >
+              Entrar
+            </button>
 
-        <button
-          className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800"
-          aria-label="Carrinho"
-          onClick={() => router.push("/cart")}
-        >
-          <FiShoppingCart />
-        </button>
+            <button
+              className="p-2 hover:scale-110 transition-transform cursor-pointer text-2xl text-gray-800"
+              aria-label="Carrinho"
+              onClick={() => router.push("/cart")}
+            >
+              <FiShoppingCart />
+            </button>
+          </>
+        )}
       </nav>
     </header>
   );

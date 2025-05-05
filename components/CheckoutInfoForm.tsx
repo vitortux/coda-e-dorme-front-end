@@ -29,6 +29,8 @@ export default function CheckoutInfoForm({ user }: { user: User | null }) {
       payment: selected,
     };
 
+    console.log(newOrderData);
+
     setOrderData(newOrderData);
     setIsModalOpen(true);
   }
@@ -72,9 +74,9 @@ export default function CheckoutInfoForm({ user }: { user: User | null }) {
                 <input
                   type="radio"
                   value="card"
-                  checked={selected === "card"}
+                  checked={selected === "CARTAO"}
                   {...register("payment", { required: true })}
-                  onChange={() => setSelected("card")}
+                  onChange={() => setSelected("CARTAO")}
                 />
                 <div className="flex items-center gap-2">
                   <FaCcVisa size={32} />
@@ -97,9 +99,9 @@ export default function CheckoutInfoForm({ user }: { user: User | null }) {
                   type="radio"
                   value="boleto"
                   className="accent-blue-600"
-                  checked={selected === "boleto"}
+                  checked={selected === "BOLETO"}
                   {...register("payment", { required: true })}
-                  onChange={() => setSelected("boleto")}
+                  onChange={() => setSelected("BOLETO")}
                 />
                 <div className="flex items-center gap-2">
                   <RiBarcodeLine size={32} />
@@ -111,7 +113,7 @@ export default function CheckoutInfoForm({ user }: { user: User | null }) {
               </label>
             </div>
 
-            {selected === "card" && <CreditCardForm />}
+            {selected === "CARTAO" && <CreditCardForm />}
           </div>
         )}
 

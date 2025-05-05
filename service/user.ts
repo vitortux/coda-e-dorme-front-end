@@ -1,7 +1,6 @@
 import { api } from "@/service/api";
-import { parseCookies } from "nookies";
-import { recoverUserData } from "./auth";
 import { Address } from "@/types/auth_types";
+import { parseCookies } from "nookies";
 
 export async function updateUser(data, id) {
   const { "codaedorme.token": token } = parseCookies();
@@ -42,4 +41,28 @@ export async function adicionarEnderecoCheckout(endereco: Address) {
       Authorization: `Bearer ${token}`,
     },
   });
+}
+
+export async function criarPedido(pedido: any) {
+  const { "codaedorme.token": token } = parseCookies();
+
+  const response = await api.post("/api/pedido/addPedido", pedido, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}
+
+export async function getPedidos() {
+  const { "codaedorme.token": token } = parseCookies();
+
+  const response = await api.get("/api/pedido/buscarPedidos", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 }
