@@ -3,7 +3,7 @@
 import GoToHomeButton from "@/components/GoToHomeButton";
 import OrderCard from "@/components/OrderCard";
 import { getPedidos } from "@/service/user";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 
@@ -17,6 +17,7 @@ type Pedido = {
 export default function Orders() {
   const { ["codaedorme.token"]: token } = parseCookies();
   const [orders, setOrders] = useState<Pedido[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (!token) {

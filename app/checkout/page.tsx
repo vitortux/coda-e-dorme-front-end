@@ -5,13 +5,14 @@ import CheckoutInfoForm from "@/components/CheckoutInfoForm";
 import GoToHomeButton from "@/components/GoToHomeButton";
 import OrderSummary from "@/components/OrderSummary";
 import { AuthContext } from "@/context/AuthContext";
-import router from "next/router";
+import {useRouter} from "next/navigation";
 import { parseCookies } from "nookies";
 import { useContext, useEffect } from "react";
 
 export default function Checkout() {
   const { ["codaedorme.token"]: token } = parseCookies();
   const { user } = useContext(AuthContext);
+  const router = useRouter();
 
   useEffect(() => {
     if (!token) {
