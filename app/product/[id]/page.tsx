@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from "react";
 export default function ProductPage() {
   const [product, setProduct] = useState<any>(null);
   const { id } = useParams<{ id: string }>();
-  const { cart, addToCart } = useContext(CartContext);
+  const { addToCart } = useContext(CartContext);
   const router = useRouter();
 
   useEffect(() => {

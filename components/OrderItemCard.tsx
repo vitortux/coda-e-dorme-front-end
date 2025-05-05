@@ -22,6 +22,9 @@ export default function OrderItem({ product, quantity }: OrderItemProps) {
           {product.descricao.slice(0, 20)}...
         </div>
         <div className="text-sm text-gray-500 mt-1">Quantidade: {quantity}</div>
+        <div className="text-sm text-gray-500 mt-1">
+          Preço Unitário: R$ {product.preco.toFixed(2)}
+        </div>
       </div>
 
       <div className="font-medium">

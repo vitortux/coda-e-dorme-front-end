@@ -3,7 +3,6 @@
 export default function CreditCardForm() {
   return (
     <div className="mt-6 grid gap-4">
-      {/* Nome completo em linha inteira */}
       <input
         type="text"
         placeholder="Nome completo"
@@ -11,7 +10,6 @@ export default function CreditCardForm() {
         required
       />
 
-      {/* Primeira linha: número do cartão e CVV */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
@@ -27,7 +25,6 @@ export default function CreditCardForm() {
         />
       </div>
 
-      {/* Segunda linha: validade e parcelas */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
