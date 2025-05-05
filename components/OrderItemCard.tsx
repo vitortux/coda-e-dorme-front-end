@@ -9,7 +9,7 @@ type OrderItemProps = {
 
 export default function OrderItem({ product, quantity }: OrderItemProps) {
   return (
-    <div className="flex gap-4 items-start">
+    <div className="flex gap-4 items-start mb-8">
       <img
         src={`http://localhost:8080${product.imagens[0].diretorioDestino}`}
         alt={product.nome}

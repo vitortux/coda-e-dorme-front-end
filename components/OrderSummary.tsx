@@ -9,7 +9,7 @@ export default function OrderSummary() {
 
   return (
     <div className="mt-8">
-      <div className="pb-8 border-b border-gray-300">
+      <div className="border-b border-gray-300">
         {cart.map((item) => (
           <OrderItem
             key={item.product.id}
