@@ -1,8 +1,19 @@
-export default function SubmitButton({ text }: { text: string }) {
+export default function SubmitButton({
+  text,
+  disabled = false,
+}: {
+  text: string;
+  disabled?: boolean;
+}) {
   return (
     <button
       type="submit"
-      className="bg-black text-white w-full py-2.5 rounded-lg text-sm shadow-sm font-semibold text-center inline-block cursor-pointer transition duration-200 transform hover:scale-102"
+      disabled={disabled}
+      className={`w-full py-2.5 rounded-lg text-sm shadow-sm font-semibold text-center inline-block transition duration-200 transform ${
+        disabled
+          ? "bg-gray-950 cursor-not-allowed text-white"
+          : "bg-black text-white cursor-pointer hover:scale-102"
+      }`}
     >
       <span className="inline-block mr-2">{text}</span>
       <svg

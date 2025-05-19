@@ -3,16 +3,16 @@ import { FiMapPin } from "react-icons/fi";
 
 export default function FaturamentoAdressCard({
   endereco,
+  title = "Endereço de faturamento:",
 }: {
   endereco: Address;
+  title?: string;
 }) {
   return (
     <div className="pb-6">
       <div className="flex items-center gap-2 mb-2">
         <FiMapPin className="w-5 h-5 text-gray-600" />
-        <h2 className="font-semibold text-base text-gray-800">
-          Endereço de faturamento:
-        </h2>
+        <h2 className="font-semibold text-base text-gray-800">{title}</h2>
       </div>
       <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm text-sm text-gray-700 space-y-1">
         <p>

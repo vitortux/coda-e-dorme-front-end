@@ -1,13 +1,14 @@
 "use client";
 
-import CartItem from "@/components/CartItem";
+import CartItem from "@/components/CartItemCard";
+import GoToHomeButton from "@/components/GoToHomeButton";
 import { CartContext } from "@/context/CartContext";
 import { getAddress } from "@/service/cep";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 
 export default function Cart() {
-  const { cart } = useContext(CartContext);
+  const { cart, setFrete } = useContext(CartContext); // Adicionando setFrete do contexto
   const router = useRouter();
 
   const [cep, setCep] = useState("");
@@ -43,6 +44,12 @@ export default function Cart() {
       0
     );
     return freteSelecionado ? subtotal + freteSelecionado.valor : subtotal;
+  };
+
+  const handleFreteChange = (e) => {
+    const frete = fretes.find((f) => f.nome === e.target.value);
+    setFreteSelecionado(frete || null);
+    setFrete(frete ? frete.valor : 0);
   };
 
   return (
@@ -134,12 +141,7 @@ export default function Cart() {
                     </label>
                     <select
                       className="w-full h-11 pr-11 pl-5 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-white border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-gray-400"
-                      onChange={(e) => {
-                        const frete = fretes.find(
-                          (f) => f.nome === e.target.value
-                        );
-                        setFreteSelecionado(frete || null);
-                      }}
+                      onChange={handleFreteChange}
                     >
                       <option value="">Selecione uma opção</option>
                       {fretesDisponiveis.map((frete, index) => (
@@ -161,33 +163,19 @@ export default function Cart() {
                   </p>
                 </div>
                 <button
+                  onClick={() => router.push("/checkout")}
                   type="button"
-                  className="cursor-pointer w-full text-center bg-black rounded-xl py-3 px-6 font-semibold text-lg text-white transition duration-200 transform hover:scale-102"
+                  disabled={cart.length === 0}
+                  className={`mb-5 w-full text-center bg-black rounded-xl py-3 px-6 font-semibold text-lg text-white ${
+                    cart.length === 0 || !freteSelecionado
+                      ? "cursor-not-allowed"
+                      : "cursor-pointer transition duration-200 transform hover:scale-102"
+                  }`}
                 >
                   Checkout
                 </button>
-                <button
-                  className="transition duration-200 mx-5 px-5 py-4 my-5 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 ring-inset"
-                  onClick={() => router.push("/")}
-                  type="button"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="w-4 h-4 inline-block align-text-top"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                    />
-                  </svg>
-                  <span className="inline-block ml-1">Página inicial</span>
-                </button>
               </form>
+              <GoToHomeButton />
             </div>
           </div>
         </div>

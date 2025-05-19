@@ -9,8 +9,9 @@ import { useContext, useEffect, useState } from "react";
 
 export default function ProductPage() {
   const [product, setProduct] = useState<any>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Estado para controlar o índice da imagem principal
   const { id } = useParams<{ id: string }>();
-  const { cart, addToCart } = useContext(CartContext);
+  const { addToCart } = useContext(CartContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -27,17 +28,42 @@ export default function ProductPage() {
     router.push("/cart");
   }
 
+  const handleImageClick = (index: number) => {
+    setCurrentImageIndex(index); // Atualiza a imagem principal com a imagem clicada
+  };
+
   return (
     <>
       <Header />
       <div className="text-gray-700 body-font overflow-hidden">
         <div className="container p-8 my-8 mx-auto bg-white">
           <div className="lg:w-4/5 mx-auto flex flex-wrap justify-between">
-            <img
-              alt="ecommerce"
-              className="lg:w-2/5 w-full object-cover object-center border-gray-200"
-              src={`http://localhost:8080${product?.imagens?.[0]?.diretorioDestino}`}
-            />
+            <div className="lg:w-2/5 w-full flex flex-col items-center">
+              {/* Imagem principal */}
+              <div className="relative w-full">
+                <img
+                  alt="ecommerce"
+                  className="w-full object-cover object-center border-gray-200"
+                  src={`http://localhost:8080${product?.imagens?.[currentImageIndex]?.diretorioDestino}`}
+                />
+              </div>
+              {/* Miniaturas */}
+              <div className="w-full mt-4 flex justify-center gap-4">
+                {product?.imagens?.map((image: any, index: number) => (
+                  <img
+                    key={index}
+                    src={`http://localhost:8080${image.diretorioDestino}`}
+                    alt={`Imagem ${index + 1}`}
+                    className={`w-20 h-20 object-cover cursor-pointer border-2 rounded ${
+                      index === currentImageIndex
+                        ? "border-black"
+                        : "border-gray-300"
+                    }`}
+                    onClick={() => handleImageClick(index)} // Altera a imagem principal ao clicar
+                  />
+                ))}
+              </div>
+            </div>
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 ">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
                 MIKE
@@ -73,7 +99,7 @@ export default function ProductPage() {
                       className="w-5 h-5"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+                      <path d="M6 9l6 6 6-6"></path>
                     </svg>
                   </a>
                   <a className="ml-2 text-gray-500">

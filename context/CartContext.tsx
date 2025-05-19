@@ -5,9 +5,11 @@ import { createContext, useState, useEffect } from "react";
 
 type CartContextType = {
   cart: CartItem[];
+  frete: number;
   addToCart: (product: Produto) => void;
-  removeFromCart: (id: number) => void;
+  clearCart: () => void;
   decreaseQuantity: (id: number) => void;
+  setFrete: (valor: number) => void;
 };
 
 export const CartContext = createContext({} as CartContextType);
@@ -20,6 +22,8 @@ export function CartProvider({ children }) {
     }
     return [];
   });
+
+  const [frete, setFrete] = useState<number>(0);
 
   useEffect(() => {
     if (cart.length > 0) {
@@ -57,15 +61,21 @@ export function CartProvider({ children }) {
     );
   }
 
-  function removeFromCart(id: number) {
-    setCart((prevCart) => {
-      return prevCart.filter((item) => item.product.id !== id);
-    });
+  function clearCart() {
+    setCart([]);
+    localStorage.removeItem("cart");
   }
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, decreaseQuantity, removeFromCart }}
+      value={{
+        cart,
+        addToCart,
+        decreaseQuantity,
+        clearCart,
+        frete,
+        setFrete,
+      }}
     >
       {children}
     </CartContext.Provider>
