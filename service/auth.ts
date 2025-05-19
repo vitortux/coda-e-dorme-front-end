@@ -1,5 +1,5 @@
 import { api } from "@/service/api";
-import { SignInRequestData, SignUpRequestData } from "@/types/auth_types"; // Importando os tipos
+import { SignInRequestData, SignUpRequestData } from "@/types/auth_types";
 import { parseCookies } from "nookies";
 
 export async function signInRequest(data: SignInRequestData) {
@@ -10,22 +10,37 @@ export async function signInRequest(data: SignInRequestData) {
 
   const cliente = response.data.cliente;
 
-  return {
-    token: response.data.token,
-    user: {
-      id: cliente.id,
-      nome_completo: cliente.nomeCompleto,
-      email: cliente.email,
-      telefone: cliente.telefone,
-      cpf: cliente.cpf,
-      data_nascimento: cliente.dataNascimento,
-      genero: cliente.genero,
-      endereco_faturamento: {
-        ...cliente.enderecoFaturamento,
+  if ("grupo" in cliente) {
+    // Admin
+    return {
+      token: response.data.token,
+      user: {
+        id: cliente.id,
+        nome_completo: cliente.nome,
+        email: cliente.email,
+        cpf: cliente.cpf,
+        grupo: cliente.grupo,
+        status: cliente.status,
+        telefone: cliente.telefone,
       },
-      endereco_entrega: cliente.enderecoEntrega,
-    },
-  };
+    };
+  } else {
+    // Usuário normal
+    return {
+      token: response.data.token,
+      user: {
+        id: cliente.id,
+        nome_completo: cliente.nomeCompleto,
+        email: cliente.email,
+        telefone: cliente.telefone,
+        cpf: cliente.cpf,
+        data_nascimento: cliente.dataNascimento,
+        genero: cliente.genero,
+        endereco_faturamento: cliente.enderecoFaturamento,
+        endereco_entrega: cliente.enderecoEntrega,
+      },
+    };
+  }
 }
 
 export async function signUpRequest(data: SignUpRequestData): Promise<void> {
@@ -58,19 +73,35 @@ export async function recoverUserData() {
 
   const cliente = response.data;
 
-  return {
-    user: {
-      id: cliente.id,
-      nome_completo: cliente.nomeCompleto,
-      email: cliente.email,
-      telefone: cliente.telefone,
-      cpf: cliente.cpf,
-      data_nascimento: cliente.dataNascimento,
-      genero: cliente.genero,
-      endereco_faturamento: {
-        ...cliente.enderecoFaturamento,
+  if ("grupo" in cliente) {
+    // Admin
+    return {
+      token: response.data.token,
+      user: {
+        id: cliente.id,
+        nome_completo: cliente.nome,
+        email: cliente.email,
+        cpf: cliente.cpf,
+        grupo: cliente.grupo,
+        status: cliente.status,
+        telefone: cliente.telefone,
       },
-      endereco_entrega: cliente.enderecoEntrega,
-    },
-  };
+    };
+  } else {
+    // Usuário normal
+    return {
+      token: response.data.token,
+      user: {
+        id: cliente.id,
+        nome_completo: cliente.nomeCompleto,
+        email: cliente.email,
+        telefone: cliente.telefone,
+        cpf: cliente.cpf,
+        data_nascimento: cliente.dataNascimento,
+        genero: cliente.genero,
+        endereco_faturamento: cliente.enderecoFaturamento,
+        endereco_entrega: cliente.enderecoEntrega,
+      },
+    };
+  }
 }

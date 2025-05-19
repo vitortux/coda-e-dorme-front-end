@@ -16,9 +16,11 @@ export type User = {
   email: string;
   cpf: string;
   data_nascimento: string;
-  genero: string;
-  endereco_entrega: Address[];
-  endereco_faturamento: Address;
+  genero?: string;
+  endereco_entrega?: Address[];
+  endereco_faturamento?: Address;
+  status?: string;
+  grupo?: string;
 };
 
 export type SignInRequestData = {

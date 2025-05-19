@@ -42,27 +42,3 @@ export async function adicionarEnderecoCheckout(endereco: Address) {
     },
   });
 }
-
-export async function criarPedido(pedido: any) {
-  const { "codaedorme.token": token } = parseCookies();
-
-  const response = await api.post("/api/pedido/addPedido", pedido, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data;
-}
-
-export async function getPedidos() {
-  const { "codaedorme.token": token } = parseCookies();
-
-  const response = await api.get("/api/pedido/buscarPedidos", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data;
-}

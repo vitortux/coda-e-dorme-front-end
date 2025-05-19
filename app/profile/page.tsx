@@ -122,18 +122,19 @@ export default function ProfilePage() {
               <p className="text-sm text-gray-400 mb-5">
                 Clique sobre um endereço para definir como padrão.
               </p>
-              {user?.endereco_entrega
-                .sort((a, b) => (b.padrao ? 1 : 0) - (a.padrao ? 1 : 0))
-                .map((endereco, index) => (
-                  <EntregaAdressCard
-                    key={index}
-                    endereco={endereco}
-                    handleClick={async () => {
-                      await setEnderecoEntregaPadrao(user.id, endereco.id);
-                      window.location.reload();
-                    }}
-                  />
-                ))}
+              {user?.endereco_entrega &&
+                [...user.endereco_entrega]
+                  .sort((a, b) => (b.padrao ? 1 : 0) - (a.padrao ? 1 : 0))
+                  .map((endereco, index) => (
+                    <EntregaAdressCard
+                      key={index}
+                      endereco={endereco}
+                      handleClick={async () => {
+                        await setEnderecoEntregaPadrao(user.id, endereco.id);
+                        window.location.reload();
+                      }}
+                    />
+                  ))}
               {enderecosNovos.length > 0 && (
                 <div className="mt-4">
                   <h3 className="font-medium text-gray-700">

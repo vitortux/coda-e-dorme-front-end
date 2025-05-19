@@ -5,6 +5,7 @@ import { RiBarcodeLine } from "react-icons/ri";
 import CreditCardForm from "./CreditCardForm";
 import SubmitButton from "./SubmitButton";
 import CheckoutModal from "./CheckoutResumeModal";
+import { User } from "@/types/auth_types";
 
 export default function CheckoutInfoForm({ user }: { user: User | null }) {
   const { register, handleSubmit } = useForm();
@@ -51,7 +52,7 @@ export default function CheckoutInfoForm({ user }: { user: User | null }) {
             onChange={handleAddressChange}
           >
             <option value="">Selecione...</option>
-            {user?.endereco_entrega.map((endereco) => (
+            {user?.endereco_entrega?.map((endereco) => (
               <option key={endereco.id} value={endereco.id}>
                 {endereco.logradouro}, {endereco.numero} - {endereco.bairro},{" "}
                 {endereco.cidade}, {endereco.estado}

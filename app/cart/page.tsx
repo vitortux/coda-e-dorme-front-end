@@ -165,7 +165,7 @@ export default function Cart() {
                 <button
                   onClick={() => router.push("/checkout")}
                   type="button"
-                  disabled={cart.length === 0 || !freteSelecionado}
+                  disabled={cart.length === 0}
                   className={`mb-5 w-full text-center bg-black rounded-xl py-3 px-6 font-semibold text-lg text-white ${
                     cart.length === 0 || !freteSelecionado
                       ? "cursor-not-allowed"

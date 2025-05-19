@@ -2,7 +2,7 @@ type Imagem = {
   id: number;
   nome: string;
   diretorioDestino: string;
-  imagemPrincipal: boolean;
+  imagem_principal: boolean;
 };
 
 type Status = "ATIVO" | "INATIVO";

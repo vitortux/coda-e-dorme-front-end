@@ -1,14 +1,3 @@
-type Order = {
-  id: number;
-  dataPedido: string;
-  statusPedido: string;
-  valorTotalPedido: number;
-};
-
-type OrderCardProps = {
-  order: Order;
-};
-
 export default function OrderCard({ order }) {
   return (
     <div
