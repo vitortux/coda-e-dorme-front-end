@@ -66,3 +66,15 @@ export async function getPedidos() {
 
   return response.data;
 }
+
+export async function getPedidosEstoquista() {
+  const { "codaedorme.token": token } = parseCookies();
+
+  const response = await api.get("/api/pedido/listarPedidos", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}

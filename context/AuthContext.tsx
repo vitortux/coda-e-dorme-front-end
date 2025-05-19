@@ -47,6 +47,7 @@ export function AuthProvider({ children }) {
     api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
     setUser(user);
+    console.log(user);
 
     router.push("/");
   }

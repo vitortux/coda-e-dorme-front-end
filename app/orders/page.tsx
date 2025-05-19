@@ -2,12 +2,14 @@
 
 import GoToHomeButton from "@/components/GoToHomeButton";
 import OrderCard from "@/components/OrderCard";
-import { getPedidos } from "@/service/user";
+import OrderResumeModal from "@/components/OrderResumeModal";
+import { AuthContext } from "@/context/AuthContext";
+import { getPedidos, getPedidosEstoquista } from "@/service/user";
 import { useRouter } from "next/navigation";
-import { parseCookies } from "nookies";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 type Pedido = {
+  id: number; // adiciona o id aqui se ainda não tiver
   dataPedido: string;
   valorTotalPedido: number;
   statusPedido: string;
@@ -15,17 +17,33 @@ type Pedido = {
 };
 
 export default function Orders() {
-  const { ["codaedorme.token"]: token } = parseCookies();
+  const { user, isAuthenticated } = useContext(AuthContext);
   const [orders, setOrders] = useState<Pedido[]>([]);
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (!token) {
+    if (!isAuthenticated) {
       router.push("/login");
     } else {
-      getPedidos().then((res) => setOrders(res));
+      if (user?.grupo) {
+        getPedidosEstoquista().then((res) => setOrders(res));
+      } else {
+        getPedidos().then((res) => setOrders(res));
+      }
     }
-  }, [token, router]);
+  }, [isAuthenticated, user, router]);
+
+  const handleOrderClick = (orderId: number) => {
+    setSelectedOrderId(orderId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedOrderId(null);
+  };
 
   return (
     <div className="relative z-10 after:contents-[''] after:absolute after:z-0 after:h-full xl:after:w-1/3 after:top-0 after:right-0 after:bg-gray-100 bg-gray-100 flex justify-center xl:items-center xl:justify-center min-h-screen overflow-hidden">
@@ -39,7 +57,11 @@ export default function Orders() {
               <GoToHomeButton />
             </div>
             {orders.length > 0 ? (
-              orders.map((order) => <OrderCard key={order.id} order={order} />)
+              orders.map((order) => (
+                <div key={order.id} onClick={() => handleOrderClick(order.id)}>
+                  <OrderCard order={order} />
+                </div>
+              ))
             ) : (
               <p className="text-gray-500 text-center">
                 Você ainda não fez nenhum pedido.
@@ -48,6 +70,15 @@ export default function Orders() {
           </div>
         </div>
       </div>
+
+      {/* Modal com pedido selecionado */}
+      {selectedOrderId && isModalOpen && (
+        <OrderResumeModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          orderId={selectedOrderId}
+        />
+      )}
     </div>
   );
 }
