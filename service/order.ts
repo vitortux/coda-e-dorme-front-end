@@ -1,20 +1,17 @@
 import { Pedido } from "@/types/order";
 import { parseCookies } from "nookies";
+import { api } from "./api";
 
 export async function detalhesPedido(pedido_id: number): Promise<Pedido> {
   const { "codaedorme.token": token } = parseCookies();
 
-  const res = await fetch(
-    `http://localhost:8080/api/pedido/detalhesPedido/${pedido_id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await api.get(`/api/pedido/detalhesPedido/${pedido_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-  const data = await res.json();
-  console.log(data);
+  const data = response.data;
 
   return {
     id: data.id,
@@ -56,4 +53,56 @@ export async function detalhesPedido(pedido_id: number): Promise<Pedido> {
     valor_total_pedido: data.valorTotalPedido,
     status_pedido: data.statusPedido,
   };
+}
+
+export async function alterarStatusPedido(pedido_id: number, status: string) {
+  const { "codaedorme.token": token } = parseCookies();
+
+  const response = await api.put(
+    `/api/pedido/alterarStatusPedido/${pedido_id}`,
+    { statusPedido: status },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function getPedidos() {
+  const { "codaedorme.token": token } = parseCookies();
+
+  const response = await api.get("/api/pedido/buscarPedidos", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}
+
+export async function getPedidosEstoquista() {
+  const { "codaedorme.token": token } = parseCookies();
+
+  const response = await api.get("/api/pedido/listarPedidos", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}
+
+export async function criarPedido(pedido: any) {
+  const { "codaedorme.token": token } = parseCookies();
+
+  const response = await api.post("/api/pedido/addPedido", pedido, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 }

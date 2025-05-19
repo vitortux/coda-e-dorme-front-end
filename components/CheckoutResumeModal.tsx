@@ -5,7 +5,7 @@ import FaturamentoAdressCard from "./FaturamentoAdressCard";
 import { FiCreditCard } from "react-icons/fi";
 import { Address } from "@/types/auth_types";
 import { AuthContext } from "@/context/AuthContext";
-import { criarPedido } from "@/service/user";
+import { criarPedido } from "@/service/order";
 import { useRouter } from "next/navigation";
 
 interface CheckoutModalProps {

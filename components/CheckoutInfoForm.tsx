@@ -5,6 +5,7 @@ import { RiBarcodeLine } from "react-icons/ri";
 import CreditCardForm from "./CreditCardForm";
 import SubmitButton from "./SubmitButton";
 import CheckoutModal from "./CheckoutResumeModal";
+import { User } from "@/types/auth_types";
 
 export default function CheckoutInfoForm({ user }: { user: User | null }) {
   const { register, handleSubmit } = useForm();

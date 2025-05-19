@@ -4,8 +4,9 @@ import GoToHomeButton from "@/components/GoToHomeButton";
 import OrderCard from "@/components/OrderCard";
 import OrderResumeModal from "@/components/OrderResumeModal";
 import { AuthContext } from "@/context/AuthContext";
-import { getPedidos, getPedidosEstoquista } from "@/service/user";
+import { getPedidos, getPedidosEstoquista } from "@/service/order";
 import { useRouter } from "next/navigation";
+import { parseCookies } from "nookies";
 import { useContext, useEffect, useState } from "react";
 
 type Pedido = {
@@ -17,23 +18,24 @@ type Pedido = {
 };
 
 export default function Orders() {
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const { ["codaedorme.token"]: token } = parseCookies();
   const [orders, setOrders] = useState<Pedido[]>([]);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!token) {
       router.push("/login");
-    } else {
-      if (user?.grupo) {
+    } else if (user) {
+      if (user.grupo) {
         getPedidosEstoquista().then((res) => setOrders(res));
       } else {
         getPedidos().then((res) => setOrders(res));
       }
     }
-  }, [isAuthenticated, user, router]);
+  }, [token, user, router]);
 
   const handleOrderClick = (orderId: number) => {
     setSelectedOrderId(orderId);
@@ -57,11 +59,21 @@ export default function Orders() {
               <GoToHomeButton />
             </div>
             {orders.length > 0 ? (
-              orders.map((order) => (
-                <div key={order.id} onClick={() => handleOrderClick(order.id)}>
-                  <OrderCard order={order} />
-                </div>
-              ))
+              orders
+                .slice()
+                .sort(
+                  (a, b) =>
+                    new Date(b.dataPedido).getTime() -
+                    new Date(a.dataPedido).getTime()
+                )
+                .map((order) => (
+                  <div
+                    key={order.id}
+                    onClick={() => handleOrderClick(order.id)}
+                  >
+                    <OrderCard order={order} />
+                  </div>
+                ))
             ) : (
               <p className="text-gray-500 text-center">
                 Você ainda não fez nenhum pedido.
