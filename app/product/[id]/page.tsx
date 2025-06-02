@@ -76,7 +76,9 @@ export default function ProductPage() {
                   {Array.from({ length: 5 }, (_, index) => (
                     <svg
                       key={index}
-                      fill={index < 4 ? "currentColor" : "none"}
+                      fill={
+                        index < product?.avaliacao ? "currentColor" : "none"
+                      }
                       stroke="currentColor"
                       strokeLinecap="round"
                       strokeLinejoin="round"
